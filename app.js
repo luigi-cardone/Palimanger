@@ -29,12 +29,12 @@ app.use(cors(corsOptions))
 app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname + "/public")))
-// app.use('/register', register)
-// app.use('/login', login)
-// app.use('/refresh', refresh)
+app.use('/register', register)
+app.use('/login', login)
+app.use('/refresh', refresh)
 // app.use(verifyJWT)
 // app.use('/logout', logout)
-// app.use('/users', users)
+app.use('/users', users)
 // app.use('/user', user)
 app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '/public/index.html'), function(err) {

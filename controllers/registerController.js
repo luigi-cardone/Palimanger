@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import db from '../config/dataBaseOptions.js'
 import math from 'math'
-import roles from '../config/userRoles.js'
+import ROLES_LIST from '../config/userRoles.js'
 
 const handleNewUser = async (req, res) =>{
     const user = req.body
@@ -19,7 +19,7 @@ const handleNewUser = async (req, res) =>{
             const hashedPwd = await bcrypt.hash(pwd, 10)
             // Store the new user 
             var q = 'INSERT INTO `users` ( `email`, `password`, `roles`) VALUES ( ?, ?, ? ) '
-            db.query(q, [email, hashedPwd, JSON.stringify([1])] ,(err, data)=>{
+            db.query(q, [email, hashedPwd, JSON.stringify([ROLES_LIST.Cliente])] ,(err, data)=>{
                 if(err) console.log(err)
                 const user_id = data.insertId
                 q = 'INSERT INTO `users_data`(`user_id`, `name`, `surname`, `tel`) VALUES (?, ?, ?, ?) '

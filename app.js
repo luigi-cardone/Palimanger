@@ -17,6 +17,13 @@ import refresh from './routes/refresh.js'
 import logout from './routes/logout.js'
 import users from './routes/users.js'
 import user from './routes/user.js'
+import commessa from './routes/commessa.js'
+import areeTerritoriali from './routes/areeTerritoriali.js'
+import areaTerritoriale from './routes/areaTerritoriale.js'
+import comuni from './routes/comuni.js'
+import comune from './routes/comune.js'
+import clienti from './routes/customers.js'
+import cliente from './routes/customer.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -32,10 +39,17 @@ app.use(express.static(path.join(__dirname + "/public")))
 app.use('/register', register)
 app.use('/login', login)
 app.use('/refresh', refresh)
-// app.use(verifyJWT)
+//app.use(verifyJWT)
 // app.use('/logout', logout)
 app.use('/users', users)
-// app.use('/user', user)
+app.use('/user', user)
+app.use('/commessa', commessa)
+app.use('/areeTerritoriali', areeTerritoriali)
+app.use('/areaTerritoriale', areaTerritoriale)
+app.use('/comuni', comuni)
+app.use('/comune', comune)
+app.use('/clienti', clienti)
+app.use('/cliente', cliente)
 app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '/public/index.html'), function(err) {
       if (err) {

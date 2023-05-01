@@ -1,5 +1,5 @@
 import express from "express";
-import {createCliente, updateCliente} from '../controllers/customerController.js'
+import {createCliente, updateCliente} from '../controllers/clienteController.js'
 const router = express.Router({mergeParams: true})
 
 router.post("/", createCliente)

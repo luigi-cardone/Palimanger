@@ -8,7 +8,7 @@ const handleLogin = (req, res) =>{
     const {email, password} = req.body
     if(!email || !password) return res.json({ 'error': true, 'message': 'Non sono stati inviati dati validi'})
     //Check if the user exists (return res.sendStatus(401))
-    var q = 'SELECT * FROM users NATURAL JOIN users_data WHERE email = ?'
+    var q = 'SELECT * FROM users INNER JOIN users_data ON users_data.user_id = users.user_id WHERE email = ?'
     db.query(q, [email], (err, data)=>{
         if(err) console.log(err)
         if(data.length === 0){
@@ -17,7 +17,7 @@ const handleLogin = (req, res) =>{
         const foundUser = data[0]
         const hashedPassword = foundUser.password
         bcrypt.compare(password, hashedPassword, function(error, match){
-            const {user_id, email, roles, name, surname} = foundUser
+            const {user_id, email, roles, nome, cognome} = foundUser
             if(match){
                 q = 'UPDATE users SET last_login = ? WHERE user_id = ?'
                 db.query(q, [new Date(), user_id], (err, data) => {
@@ -28,8 +28,8 @@ const handleLogin = (req, res) =>{
                                 "user_id" : user_id,
                                 "email" : email,
                                 "roles" : roles,
-                                "name" : name,
-                                "surname" : surname
+                                "nome" : nome,
+                                "cognome" : cognome
                             }
                         },
                         process.env.ACCESS_TOKEN_SECRET,
@@ -52,14 +52,14 @@ const handleLogin = (req, res) =>{
                             q = 'INSERT INTO `users_remembered`(`user_id`, `token`, `expire_date`) VALUES (?, ?, ?)'
                             db.query(q, [user_id, refreshToken, expireDate], (err, data) =>{
                                 if(err) console.log(err)
-                                return res.json({name, surname, roles: JSON.parse(roles), user_id, accessToken});
+                                return res.json({nome, cognome, roles: JSON.parse(roles), user_id, accessToken});
                             })
                         }
                         else{
                             q = 'UPDATE `users_remembered` SET `token`= ? ,`expire_date`= ? WHERE `user_id` = ? '   
                             db.query(q, [refreshToken, expireDate, user_id], (err, data) =>{
                                 if(err) console.log(err)
-                                return res.json({ name, surname, roles: JSON.parse(roles), user_id, accessToken});
+                                return res.json({ nome, cognome, roles: JSON.parse(roles), user_id, accessToken});
                             })
                         }
                     })

@@ -15,7 +15,7 @@ const handleRefreshToken = (req, res) =>{
             return res.sendStatus(403)
         }
         const user_id = data[0].user_id
-        q = 'SELECT * FROM users NATURAL JOIN users_data WHERE `user_id` = ?'
+        q = 'SELECT * FROM users INNER JOIN users_data ON users_data.user_id = users.user_id WHERE users.user_id = ?'
         db.query(q, [user_id], async (err, data)=>{
             if(err) console.log(err)
             if(data.length === 0){
@@ -37,14 +37,14 @@ const handleRefreshToken = (req, res) =>{
                                 "user_id" : user.user_id,
                                 "email" : user.email,
                                 "roles" : roles,
-                                "name" : user.name,
-                                "surname" : user.surname
+                                "nome" : user.nome,
+                                "cognome" : user.cognome
                             }
                         },
                         process.env.ACCESS_TOKEN_SECRET,
                         {expiresIn: '30s'}
                     )
-                    res.json({name: user.name, surname: user.surname, roles: roles, user_id: user.user_id, accessToken: accessToken})
+                    res.json({nome: user.nome, cognome: user.cognome, roles: roles, user_id: user.user_id, accessToken: accessToken})
                 }
              )
         })

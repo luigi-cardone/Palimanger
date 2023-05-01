@@ -4,7 +4,7 @@ import ROLES_LIST from '../config/userRoles.js'
 
 const getUserBioData = (req, res) =>{
     const user_id = req.params.user_id
-    const q = "SELECT * FROM users NATURAL JOIN users_data"
+    const q = "SELECT * FROM users INNER JOIN users_data ON users_data.user_id = users.user_id"
     db.query(q, [user_id], (err, data)=>{
         if(err) return res.json(err)
         return res.json(data)
@@ -19,7 +19,7 @@ const updateUserBioData = (req, res) =>{
             console.log(err)
             return res.json({'error' : true, 'message' : err})
         }
-        return res.json({'error' : false, 'message' : 'utente aggiornato con successo'})
+        return res.json({'error' : false, 'message' : 'Utente aggiornato con successo'})
     })
 }
 
@@ -40,18 +40,18 @@ const createAdmin = async (req, res) =>{
         const user_id = data.insertId
         q = 'INSERT INTO `users_data`(`user_id`, `name`, `surname`, `tel`) VALUES (?, ?, ?, ?)'
         db.query(q, [user_id ,nome, cognome, tel] ,(err, data)=>{
-            if(err) return res.json({'error' : true, 'message' : 'errore'})
-            return res.json({'error' : false, 'message' : 'utente eliminato con successo', 'password' : password})
+            if(err) return res.json({'error' : true, 'message' : 'Errore del Server'})
+            return res.json({'error' : false, 'message' : 'Utente creato con successo', 'password' : password})
         })
     })
 }
 
 const deleteUser = (req, res) =>{
     const user_id = req.params.user_id
-    const q = "DELETE FROM users NATURAL JOIN users_data WHERE `user_id` = ?"
+    const q = "DELETE FROM users INNER JOIN users_data ON users_data.user_id = users.user_id WHERE users.user_id = ?"
     db.query(q, [user_id], (err, data)=>{
-        if(err) return res.json({'error' : true, 'message' : 'errore'})
-        return res.json({'error' : false, 'message' : 'utente eliminato con successo'})
+        if(err) return res.json({'error' : true, 'message' : 'Errore del Server'})
+        return res.json({'error' : false, 'message' : 'Utente eliminato con successo'})
     })
 }
 export {getUserBioData, updateUserBioData, deleteUser, createAdmin}

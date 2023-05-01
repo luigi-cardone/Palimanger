@@ -9,24 +9,16 @@ const getCommessa = (req, res) =>{
 }
 
 const createCommessa = (req, res) =>{
-    const {customer_id, user_id, modified_by, modified_date, citta, referente, fornitore_1, fornitore_2, data_inizio, data_fine, configurazione, azienda_manutentrice, contatti_manutentore, tipo_verifica, note, note_interne, punti_luce} = req.body.commessa
-    const q = "INSERT INTO `commesse`(`customer_id`, `user_id`, `modified_by`, `modified_date`, `city`) VALUES (?,?,?,?,?)"
-    db.query(q, [customer_id, user_id, modified_by, modified_date, citta], (err, data)=>{
-        if(err) console.log(err)
+    const {cliente_id, user_id, modificato_da, data_modifca, comune, referente, fornitore_1, fornitore_2, data_inizio, data_fine, configurazione_id, azienda_manutentrice, contatti_manutentore, tipo_verifica, note, note_interne, punti_luce} = req.body.commessa
+    const q = "INSERT INTO `commesse`(`cliente_id`, `user_id`, `modificato_da`, `data_modifca`, `comune`) VALUES (?,?,?,?,?)"
+    db.query(q, [cliente_id, user_id, modificato_da, data_modifca, comune], (err, data)=>{
+        if(err) res.json({'error' : true, 'message' : 'Errore del Server'})
         const commessa_id = data.insertId
-        q = "INSERT INTO `commesse_data`(`commessa_id`, `referent`, `supplier`, `supplier_2`, `begin_date`, `end_date`, `configuration`, `manufacturer`, `manufacturer_contacts`, `verify_type`, `note`, `private_note`, `punti_luce`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
-        db.query(q, [commessa_id, referente, fornitore_1, fornitore_2, data_inizio, data_fine, configurazione, azienda_manutentrice, contatti_manutentore, tipo_verifica, note, note_interne, punti_luce] ,(err, data)=>{
-            if(err) console.log(err)
-            return res.json({'error' : false, 'message' : 'commessa creata con successo'})
+        q = "INSERT INTO `commesse_data`(`commessa_id`, `referente`, `fornitore_1`, `fornitore_2`, `data_inizio`, `data_fine`, `configurazione_id`, `azienda_manutentrice`, `contatti_manutentore`, `tipo_verifica`, `note`, `note_interne`, `punti_luce`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        db.query(q, [commessa_id, referente, fornitore_1, fornitore_2, data_inizio, data_fine, configurazione_id, azienda_manutentrice, contatti_manutentore, tipo_verifica, note, note_interne, punti_luce] ,(err, data)=>{
+            if(err) res.json({'error' : true, 'message' : 'Errore del Server'})
+            return res.json({'error' : false, 'message' : 'Commessa creata con successo'})
         })
     })
 }
-
-const updateCommessa = (req, res) =>{
-    const q = "SELECT * FROM users NATURAL JOIN users_data"
-    db.query(q, (err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
-}
-export {getCommessa, createCommessa, updateCommessa}
+export {getCommessa, createCommessa}

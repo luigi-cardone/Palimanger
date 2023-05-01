@@ -22,8 +22,10 @@ import areeTerritoriali from './routes/areeTerritoriali.js'
 import areaTerritoriale from './routes/areaTerritoriale.js'
 import comuni from './routes/comuni.js'
 import comune from './routes/comune.js'
-import clienti from './routes/customers.js'
-import cliente from './routes/customer.js'
+import clienti from './routes/clienti.js'
+import cliente from './routes/cliente.js'
+import fornitori from './routes/fornitori.js'
+import fornitore from './routes/fornitore.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -50,6 +52,8 @@ app.use('/comuni', comuni)
 app.use('/comune', comune)
 app.use('/clienti', clienti)
 app.use('/cliente', cliente)
+app.use('/fornitori', fornitori)
+app.use('/fornitore', fornitore)
 app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '/public/index.html'), function(err) {
       if (err) {

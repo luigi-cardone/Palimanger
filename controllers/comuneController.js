@@ -1,19 +1,19 @@
 import db from '../config/dataBaseOptions.js'
 const createComune = (req, res) =>{
-    const {nome, acronimo, cod_provincia, territori_id, clienti_id } = req.body.comune
-    const q = "INSERT INTO `comuni`(`nome`, `acronimo`, `cod_provincia`, `territori_id`, `clienti_id`) VALUES (?,?,?,?,?)"
-    db.query(q, [nome, acronimo, cod_provincia, territori_id, clienti_id] , (err, data)=>{
-        if(err) return console.log(err)
-        return res.json(data)
+    const {nome, acronimo, cod_provincia, area_territoriale_id, cliente_id } = req.body
+    const q = "INSERT INTO `comuni`(`nome`, `acronimo`, `cod_provincia`, `area_territoriale_id`, `cliente_id`) VALUES (?,?,?,?,?)"
+    db.query(q, [nome, acronimo, cod_provincia, area_territoriale_id, cliente_id] , (err, data)=>{
+        if(err) return res.json({'error' : true, 'message' : 'Errore del Server'})
+        return res.json({'error' : false, 'message' : 'Comune creato con successo'})
     })
 }
 
 const updateComune = (req, res) =>{
-    const {comuni_id, nome, acronimo, cod_provincia, territori_id, clienti_id } = req.body.comune
-    const q = "UPDATE `comuni` SET `nome`= ?,`acronimo`= ?,`cod_provincia`= ?,`territori_id`= ?,`clienti_id`= ? WHERE comuni_id = ?"
-    db.query(q, [comuni_id, nome, acronimo, cod_provincia, territori_id, clienti_id] , (err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
+    const {comune_id, nome, acronimo, cod_provincia, area_territoriale_id, cliente_id } = req.body
+    const q = "UPDATE `comuni` SET `nome`= ?,`acronimo`= ?,`cod_provincia`= ?,`area_territoriale_id`= ?,`cliente_id`= ? WHERE comune_id = ?"
+    db.query(q, [comune_id, nome, acronimo, cod_provincia, area_territoriale_id, cliente_id] , (err, data)=>{
+        if(err) return res.json({'error' : true, 'message' : 'Errore del Server'})
+        return res.json({'error' : false, 'message' : 'Comune aggiornato con successo'})
     })
 }
 export { createComune, updateComune }

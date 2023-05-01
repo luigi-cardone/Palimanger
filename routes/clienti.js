@@ -1,5 +1,5 @@
 import express from "express";
-import getCustomers from '../controllers/customersController.js'
+import getCustomers from '../controllers/clientiController.js'
 const router = express.Router({mergeParams: true})
 
 router.get("/", getCustomers)

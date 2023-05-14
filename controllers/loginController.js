@@ -17,7 +17,7 @@ const handleLogin = (req, res) =>{
         const foundUser = data[0]
         const hashedPassword = foundUser.password
         bcrypt.compare(password, hashedPassword, function(error, match){
-            const {user_id, email, roles, nome, cognome} = foundUser
+            const {user_id, email, role, nome, cognome} = foundUser
             if(match){
                 q = 'UPDATE users SET last_login = ? WHERE user_id = ?'
                 db.query(q, [new Date(), user_id], (err, data) => {
@@ -27,7 +27,7 @@ const handleLogin = (req, res) =>{
                             "UserInfo" : {
                                 "user_id" : user_id,
                                 "email" : email,
-                                "roles" : roles,
+                                "role" : role,
                                 "nome" : nome,
                                 "cognome" : cognome
                             }
@@ -52,14 +52,14 @@ const handleLogin = (req, res) =>{
                             q = 'INSERT INTO `users_remembered`(`user_id`, `token`, `expire_date`) VALUES (?, ?, ?)'
                             db.query(q, [user_id, refreshToken, expireDate], (err, data) =>{
                                 if(err) console.log(err)
-                                return res.json({nome, cognome, roles: JSON.parse(roles), user_id, accessToken});
+                                return res.json({nome, cognome, role: JSON.parse(role), user_id, accessToken});
                             })
                         }
                         else{
                             q = 'UPDATE `users_remembered` SET `token`= ? ,`expire_date`= ? WHERE `user_id` = ? '   
                             db.query(q, [refreshToken, expireDate, user_id], (err, data) =>{
                                 if(err) console.log(err)
-                                return res.json({ nome, cognome, roles: JSON.parse(roles), user_id, accessToken});
+                                return res.json({ nome, cognome, role: JSON.parse(role), user_id, accessToken});
                             })
                         }
                     })

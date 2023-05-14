@@ -22,7 +22,7 @@ const handleRefreshToken = (req, res) =>{
                 return res.sendStatus(403)
             }
             const user = data[0]
-            const roles = JSON.parse(user.roles)
+            const role = user.role
             jwt.verify(
                 refreshToken,
                 process.env.REFRESH_TOKEN_SECRET,
@@ -36,7 +36,7 @@ const handleRefreshToken = (req, res) =>{
                            "UserInfo" : {
                                 "user_id" : user.user_id,
                                 "email" : user.email,
-                                "roles" : roles,
+                                "role" : role,
                                 "nome" : user.nome,
                                 "cognome" : user.cognome
                             }
@@ -44,7 +44,7 @@ const handleRefreshToken = (req, res) =>{
                         process.env.ACCESS_TOKEN_SECRET,
                         {expiresIn: '30s'}
                     )
-                    res.json({nome: user.nome, cognome: user.cognome, roles: roles, user_id: user.user_id, accessToken: accessToken})
+                    res.json({nome: user.nome, cognome: user.cognome, role: role, user_id: user.user_id, accessToken: accessToken})
                 }
              )
         })
